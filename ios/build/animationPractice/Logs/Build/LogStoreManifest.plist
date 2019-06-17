@@ -5,6 +5,65 @@
 	<key>logFormatVersion</key>
 	<integer>9</integer>
 	<key>logs</key>
-	<dict/>
+	<dict>
+		<key>425653EB-4755-4F09-AC90-BB65C6301012</key>
+		<dict>
+			<key>className</key>
+			<string>IDECommandLineBuildLog</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.DebugLog</string>
+			<key>fileName</key>
+			<string>425653EB-4755-4F09-AC90-BB65C6301012.xcactivitylog</string>
+			<key>highLevelStatus</key>
+			<string>E</string>
+			<key>schemeIdentifier-containerName</key>
+			<string>animationPractice project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>animationPractice</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Building project animationPractice with scheme animationPractice and configuration Debug</string>
+			<key>timeStartedRecording</key>
+			<real>582499657.79089797</real>
+			<key>timeStoppedRecording</key>
+			<real>582499659.13699305</real>
+			<key>title</key>
+			<string>Building project animationPractice with scheme animationPractice and configuration Debug</string>
+			<key>uniqueIdentifier</key>
+			<string>425653EB-4755-4F09-AC90-BB65C6301012</string>
+		</dict>
+		<key>77439361-F83C-4425-B2D7-6432F6731F8C</key>
+		<dict>
+			<key>className</key>
+			<string>IDECommandLineBuildLog</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.DebugLog</string>
+			<key>fileName</key>
+			<string>77439361-F83C-4425-B2D7-6432F6731F8C.xcactivitylog</string>
+			<key>highLevelStatus</key>
+			<string>E</string>
+			<key>schemeIdentifier-containerName</key>
+			<string>animationPractice project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>animationPractice</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Building project animationPractice with scheme animationPractice and configuration Debug</string>
+			<key>timeStartedRecording</key>
+			<real>582500954.11822903</real>
+			<key>timeStoppedRecording</key>
+			<real>582500957.538679</real>
+			<key>title</key>
+			<string>Building project animationPractice with scheme animationPractice and configuration Debug</string>
+			<key>uniqueIdentifier</key>
+			<string>77439361-F83C-4425-B2D7-6432F6731F8C</string>
+		</dict>
+	</dict>
 </dict>
 </plist>

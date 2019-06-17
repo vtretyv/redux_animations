@@ -58,10 +58,12 @@ class WelcomePage extends React.Component {
 
     fireAnimation = (isReverse) => {
         const { circleAnimation } = this.state;
+        const { fireFadeAnimation } = this.props;
         Animated.timing(circleAnimation, {
             toValue: isReverse ? 0 : 1,
             duration: 1000,
         }).start();
+        fireFadeAnimation(isReverse);
         isReverse ? this.animationReversed() : this.animationFired();
     };
 

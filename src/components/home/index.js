@@ -8,21 +8,35 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: 'green',
+    //   backgroundColor: '#228B22',
     },
 });
 
 class HomePage extends React.Component {
     state = {
-        circleAnimation: new Animated.Value(0),
-        animationFired: false,
+        fadeAnimation: new Animated.Value(0),
+    };
+    
+    fireFadeAnimation = (isReverse) => {
+        const { fadeAnimation } = this.state;
+        Animated.timing(fadeAnimation,{
+            toValue: isReverse ? 0 : 1,
+            // toValue: 1,
+            duration: 1000,
+        }).start();
     };
 
     render() {
+        const backgroundColor = this.state.fadeAnimation.interpolate({
+            inputRange:[0,0.2,0.4,0.6,0.8, 1],
+            outputRange: ['rgb(34, 139, 34)','rgb(34, 120, 34)','rgb(34, 100, 34)','rgb(34, 80, 34)','rgb(34, 60, 34)','rgb(34, 40, 34)']
+        })
         return (
-            <View style={styles.container}>
-             <WelcomePage />
-          </View>
+            <Animated.View style={[styles.container,
+                {backgroundColor}]
+            }>
+             <WelcomePage fireFadeAnimation={this.fireFadeAnimation}/>
+          </Animated.View>
           )
     }
 }
