@@ -8,7 +8,6 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-    //   backgroundColor: '#228B22',
     },
 });
 
@@ -21,7 +20,6 @@ class HomePage extends React.Component {
         const { fadeAnimation } = this.state;
         Animated.timing(fadeAnimation,{
             toValue: isReverse ? 0 : 1,
-            // toValue: 1,
             duration: 1000,
         }).start();
     };
