@@ -1,6 +1,6 @@
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, TouchableOpacity, Animated, Alert} from 'react-native';
+import {Platform, StyleSheet, Text, View, TouchableOpacity, Animated } from 'react-native';
 import WelcomePage from '../welcome';
 
 const styles = StyleSheet.create({
