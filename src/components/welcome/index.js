@@ -1,73 +1,73 @@
 
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, TouchableOpacity, Animated, Alert} from 'react-native';
-
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#F5FCFF',
-      marginVertical: 50,
-      borderRadius: 50,
-    },
-    welcome: {
-      fontSize: 20,
-      textAlign: 'center',
-      margin: 10,
-    },
-    instructions: {
-      textAlign: 'center',
-      color: '#333333',
-      marginBottom: 5,
-    },
-    animationButton: {
-        width: '30%',
-        height:'15%',
-        marginLeft: 'auto',
-        marginRight: 'auto',
-    },
-    circle: {
-        width: 200,
-        height: 200,
-        borderRadius: 100,
-        borderWidth: 1,
-        backgroundColor: `teal`,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    buttonCenter: {
-        justifyContent: 'center',
-        alignItems: 'center',
-    }
-});
+import { connect } from 'react-redux';
+import { stateEnum } from '../../redux/reducers/eventReducer';
+import { onStateUpdate } from '../../redux/actionCreators/Event';
+import styles from './styles';
 
 class WelcomePage extends React.Component {
     state = {
         circleAnimation: new Animated.Value(0),
-        animationFired: false,
+        // No longer need this local state to keep track of the animation.
+        // animationFired : false,
     };
-
-    animationFired = () => {
-        this.setState({animationFired: true});
-    }
-
-    animationReversed = () => {
-        this.setState({animationFired: false});
-    }
 
     fireAnimation = (isReverse) => {
         const { circleAnimation } = this.state;
-        const { fireFadeAnimation } = this.props;
+        // This is no longer being passed down, so no need for it here.
+        // const { fireFadeAnimation } = this.props;
         Animated.timing(circleAnimation, {
             toValue: isReverse ? 0 : 1,
             duration: 1000,
         }).start();
-        fireFadeAnimation(isReverse);
-        isReverse ? this.animationReversed() : this.animationFired();
+        // Our function that we had to pass down and fire no longer needs to be called here, as the parent is now listening for the event status change and will fire it.
+        // fireFadeAnimation(isReverse);
+        // isReverse ? this.animationReversed() : this.animationFired();
+    };
+
+    // This function will be used in the component will recieve props life cycle. Depending on the event status in redux, it will fire the animation in different ways (forward or reverse).
+    onStateEventUpdate = state => {
+        switch (state) {
+          case stateEnum.ON_ENTER:
+            this.fireAnimation();
+            break;
+          case stateEnum.ON_EXIT:
+            this.fireAnimation(true);
+            break;
+          default:
+            return null;
+        }
+        return null;
+    };
+
+    // This function reads the current state, and sets a new state. This is where we can create a pattern. Ours is Idle -> enter -> exit -> enter ...
+    updateAnimationState = (oldState) => {
+        const { onStateUpdate } = this.props;
+        switch(oldState) {
+            case stateEnum.IDLE:
+                onStateUpdate({state:stateEnum.ON_ENTER});
+                break;
+            case stateEnum.ON_ENTER:
+                onStateUpdate({state:stateEnum.ON_EXIT});
+                break;
+            case stateEnum.ON_EXIT:
+                onStateUpdate({state:stateEnum.ON_ENTER});
+                break;
+            default:
+                break;
+        }
+    }
+
+    // This lifecycle method will listen for the event status, which will be passed through redux. If it detects a status change, it launches the function, which then chooses the correct animation to fire.
+    componentWillReceiveProps = nextProps => {
+        if (nextProps.status !== this.props.status) {
+          this.onStateEventUpdate(nextProps.status);
+        }
     };
 
     render() {
+        // Here we map the animation value increase to an increase of particular styling properties.
         const { circleAnimation } = this.state;
         const scaleX = circleAnimation.interpolate({
             inputRange: [0,1],
@@ -81,13 +81,16 @@ class WelcomePage extends React.Component {
             inputRange: [0,1],
             outputRange: [0,50],
         })
+
+        const { onStateUpdate, status } = this.props;
+
         return (
             <View style={styles.container}>
-            <Text style={styles.welcome}>Trigger an animation using local state!</Text>
-            <Text style={styles.welcome}>Here is the local state: {this.state.animationFired.toString()}</Text>
+            <Text style={styles.welcome}>Trigger an animation using redux state!</Text>
+            <Text style={styles.welcome}>Here is the redux state: {status}</Text>
             <View style ={styles.buttonCenter}>
-                <TouchableOpacity style = {styles.animationButton} onPress = {()=>this.fireAnimation(this.state.animationFired)}>
-                 { this.state.animationFired ? <Text>Reverse Me!</Text> : <Text>Fire Me!</Text>}
+                <TouchableOpacity style = {styles.animationButton} onPress = {()=> {this.updateAnimationState(status)}}>
+                 { status === stateEnum.ON_ENTER ? <Text>Reverse Me!</Text> : <Text>Fire Me!</Text>}
                 </TouchableOpacity>
             </View>
             <Animated.View style={[styles.circle, {transform : [
@@ -95,10 +98,21 @@ class WelcomePage extends React.Component {
                 {scaleY},
                 {translateY: translateY}
             ]}]}>
-                <Text>Our Circle</Text>
+                <Text>Redux Circle</Text>
             </Animated.View>
           </View>)
     }
 }
 
-export default WelcomePage;
+// Have to map the status from redux
+const mapStateToProps = state => ({
+    status: state.event.state,
+})
+
+// Have to map the status update function from redux.
+const mapDispatchToProps = dispatch => ({
+    onStateUpdate: state => dispatch(onStateUpdate(state)) 
+});
+
+// Connect the component to redux with the proper mappings
+export default connect(mapStateToProps,mapDispatchToProps)(WelcomePage);
