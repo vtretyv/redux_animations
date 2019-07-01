@@ -33,10 +33,14 @@ const styles = StyleSheet.create({
           backgroundColor: `pink`,
           alignItems: 'center',
           justifyContent: 'center',
+          zIndex: -1,
       },
       buttonCenter: {
           justifyContent: 'center',
           alignItems: 'center',
+          flexDirection: 'row',
+          flexWrap:'wrap',
+          height: '15%',
       }
 });
 
