@@ -8,6 +8,7 @@ import styles from './styles';
 
 class WelcomePage extends React.Component {
     state = {
+        // Now using local state to keep track of animation properties ans swap between then.
         circleAnimation: new Animated.Value(0),
         scaleX: 1,
         scaleY: 1,
@@ -19,21 +20,7 @@ class WelcomePage extends React.Component {
     };
 
     componentDidMount(){
-        const { circleAnimation } = this.state;
-        // Sets it to down and scale
-        const scaleX = circleAnimation.interpolate({
-            inputRange: [0,1],
-            outputRange: [1,1.6],
-        })
-        const scaleY = circleAnimation.interpolate({
-            inputRange: [0,1],
-            outputRange: [1,1.6],
-        })
-        const translateY = circleAnimation.interpolate({
-            inputRange: [0,1],
-            outputRange: [0,50],
-        })
-        this.setState({scaleX, scaleY, translateY});
+        this.setAnimationProperties([1,1.6],[1,1.6],[0,0],[0,50]);
     }
 
     setAnimationProperties = (scaleXOutput, scaleYOutput,translateXOuput, translateYOutput, rotateOutput) => {
@@ -42,7 +29,7 @@ class WelcomePage extends React.Component {
         let scaleY =1;
         let tranlsateX =1;
         let translateY =1;
-        let rotate=1;
+        let rotate='0deg';
         scaleXOutput && (
          scaleX = circleAnimation.interpolate({
             inputRange: [0,1],
@@ -199,26 +186,13 @@ class WelcomePage extends React.Component {
     render() {
         // Here we map the animation value increase to an increase of particular styling properties.
         const { circleAnimation, scaleX, scaleY, translateY, translateX, rotate } = this.state;
-        // Down and scale
-        // const scaleX = circleAnimation.interpolate({
-        //     inputRange: [0,1],
-        //     outputRange: [1,1.6],
-        // })
-        // const scaleY = circleAnimation.interpolate({
-        //     inputRange: [0,1],
-        //     outputRange: [1,1.6],
-        // })
-        // const translateY = circleAnimation.interpolate({
-        //     inputRange: [0,1],
-        //     outputRange: [0,50],
-        // })
-
-        const { onStateUpdate, status } = this.props;
+        const { onStateUpdate, status, event } = this.props;
 
         return (
             <View style={styles.container}>
             <Text style={styles.welcome}>Trigger an animation using redux state!</Text>
             <Text style={styles.welcome}>Here is the redux state: {status}</Text>
+            <Text style={styles.welcome}>Here is the redux event: {event}</Text>
             <View style ={styles.buttonCenter}>
                 <TouchableOpacity style = {styles.animationButton} onPress = {()=> {this.updateAnimationState(status, stateEnumEventTypes.DOWN_AND_SCALE)}}>
                  { status === stateEnum.ON_ENTER ? <Text>Reverse Me!</Text> : <Text>Down and Scale!</Text>}
@@ -240,7 +214,6 @@ class WelcomePage extends React.Component {
                 {translateX},
                 {rotate},
             ]}]}>
-                {/* <ImageBackground source={{uri: 'https://hgtvhome.sndimg.com/content/dam/images/hgtv/fullset/2011/7/18/0/HGTV_Color-Wheel-Full_s4x3.jpg.rend.hgtvcom.616.462.suffix/1400967008479.jpeg'}} style={{width:'100%', height:'100%'}}/> */}
                 <Text>Redux Circle</Text>
             </Animated.View>
           </View>)
